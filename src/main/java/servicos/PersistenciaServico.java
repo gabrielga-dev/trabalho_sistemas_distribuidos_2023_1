@@ -1,7 +1,5 @@
 package servicos;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import dados.Estado;
 import lombok.SneakyThrows;
 import util.Constantes;
@@ -49,21 +47,16 @@ public class PersistenciaServico {
         }
 
         // Ler o conteúdo do arquivo JSON
-        String json = "";
+        StringBuilder json = new StringBuilder();
         try (FileReader reader = new FileReader(arquivo)) {
             int character;
             while ((character = reader.read()) != -1) {
-                json += (char) character;
+                json.append((char) character);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        var gson = new Gson();
-        try {
-            return gson.fromJson(json, Estado.class);
-        } catch (JsonSyntaxException e) {
-            throw e;
-        }
+        return ParseJsonServico.parseEstadoDeJson(json.toString());
     }
 }
