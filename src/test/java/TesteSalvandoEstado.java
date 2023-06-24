@@ -1,8 +1,8 @@
-import dados.Conta;
-import dados.Estado;
-import dados.Transacao;
-import servicos.ParseJsonServico;
-import util.Constantes;
+import comun.dados.Conta;
+import comun.dados.Estado;
+import comun.dados.Transacao;
+import comun.util.ParseJsonServico;
+import comun.util.Constantes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,18 +11,18 @@ public class TesteSalvandoEstado {
 
     public static void main(String[] args) {
         var transacao1 = new Transacao();
-        transacao1.setIdentificadorPagador(1L);
-        transacao1.setIdentificadorRecebedor(2L);
-        transacao1.setValor(BigDecimal.valueOf(Constantes.VALOR_SALDO_INICIAL));
+        transacao1.setIdentificadorPagador("1");
+        transacao1.setIdentificadorRecebedor("2");
+        transacao1.setValor(BigDecimal.valueOf(10l));
         var transacao2 = new Transacao();
-        transacao2.setIdentificadorPagador(2L);
-        transacao2.setIdentificadorRecebedor(1L);
-        transacao2.setValor(BigDecimal.valueOf(Constantes.VALOR_SALDO_INICIAL));
+        transacao2.setIdentificadorPagador("2");
+        transacao2.setIdentificadorRecebedor("1");
+        transacao2.setValor(BigDecimal.valueOf(100l));
 
         var transacoes = List.of(transacao1, transacao2);
 
         var conta = new Conta();
-        conta.setIdentificador(1L);
+        conta.setIdentificador("1");
         conta.setSenha("SENHA");
         conta.setNomeCliente("CLIENTEeeeeeee");
         conta.setTransacoes(transacoes);
@@ -33,5 +33,6 @@ public class TesteSalvandoEstado {
         estado.setContas(contas);
 
         System.out.println(ParseJsonServico.parseParaJson(estado));
+        System.out.println(conta.getSaldo());
     }
 }

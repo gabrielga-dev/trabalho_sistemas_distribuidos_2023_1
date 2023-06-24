@@ -1,8 +1,9 @@
-package servicos;
+package persistencia;
 
-import dados.Estado;
+import comun.dados.Estado;
+import comun.util.ParseJsonServico;
 import lombok.SneakyThrows;
-import util.Constantes;
+import comun.util.Constantes;
 
 import java.io.File;
 import java.io.FileReader;
@@ -38,12 +39,12 @@ public class PersistenciaServico {
         }
     }
 
-    public Estado recuperaEstado(){
+    public Estado recuperaEstado() throws Exception {
         // Verificar se o arquivo existe
         File arquivo = new File(Constantes.ARQUIVO_ESTADO_PATH);
         if (!arquivo.exists()) {
             System.out.println("O arquivo JSON não existe.");
-            throw new RuntimeException("Não existe arquivo de estado!");
+            throw new Exception();
         }
 
         // Ler o conteúdo do arquivo JSON

@@ -1,4 +1,4 @@
-package dados;
+package comun.dados;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 @Setter
 public class Transacao implements Serializable {
 
-    private Long identificadorPagador;
-    private Long identificadorRecebedor;
+    private String identificadorPagador;
+    private String identificadorRecebedor;
     private BigDecimal valor;
 
     private String server;
