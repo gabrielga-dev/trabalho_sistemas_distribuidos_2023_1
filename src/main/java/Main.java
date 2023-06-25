@@ -1,9 +1,9 @@
-import main.Visao;
+import main.GiganteGuerreiro;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        var visao = new Visao();
+        var visao = new GiganteGuerreiro();
         visao.inicia();
     }
 }

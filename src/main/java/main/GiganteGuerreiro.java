@@ -17,7 +17,7 @@ import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.ResponseMode;
 import org.jgroups.util.RspList;
 
-public class Visao extends ReceiverAdapter implements RequestHandler {
+public class GiganteGuerreiro extends ReceiverAdapter implements RequestHandler {
 
     private JChannel canalDeComunicacao;
     private MessageDispatcher despachante;
@@ -37,11 +37,29 @@ public class Visao extends ReceiverAdapter implements RequestHandler {
 
         canalDeComunicacao.connect("TRABALHO_SD");
 
-        //todo pegar estado dos demais servidores
-        estado = persistenciaServico.recuperaEstado();
+        this.trataEstado();
 
         eventLoop();
         canalDeComunicacao.close();
+    }
+
+    private void trataEstado() throws Exception {
+        if (canalDeComunicacao.getView().getMembers().size() == 1){
+            this.estado = persistenciaServico.recuperaEstado();
+            return;
+        }
+        var envelope = new Protocolo("", TipoProtocolo.BUSCA_ESTADO);
+
+        var protocoloResposta = enviaMulticast(envelope).getResults().get(0);
+        var resposta = ParseJsonServico.parseRespostaDeJson(protocoloResposta.getConteudo());
+
+        if (!resposta.isSucesso()){
+            System.out.println("Impossível de buscar o estado, suba o processo novamente!");
+            return;
+        }
+        var estado = ParseJsonServico.parseEstadoDeJson(resposta.getMensagem());
+        this.estado = estado;
+        persistenciaServico.salvaEstado(this.estado);
     }
 
     private void eventLoop() throws Exception {
@@ -204,6 +222,9 @@ public class Visao extends ReceiverAdapter implements RequestHandler {
             case EXTRATO:
                 protocolo.setConteudo(processaExtrato(protocolo.getConteudo()));
                 return protocolo;
+            case BUSCA_ESTADO:
+                protocolo.setConteudo(processaBuscaEstado());
+                return protocolo;
         }
         return null;
     }
@@ -279,6 +300,12 @@ public class Visao extends ReceiverAdapter implements RequestHandler {
         var conta = contaOpt.get();
         var extrato = new Extrato(conta.getSaldo(), conta.getTransacoes());
         var resposta = new Resposta(true, ParseJsonServico.parseParaJson(extrato));
+        return ParseJsonServico.parseParaJson(resposta);
+    }
+
+    private String processaBuscaEstado() {
+        var estadoJson = ParseJsonServico.parseParaJson(this.estado);
+        var resposta = new Resposta(true, estadoJson);
         return ParseJsonServico.parseParaJson(resposta);
     }
 }
