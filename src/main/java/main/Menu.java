@@ -18,6 +18,7 @@ public class Menu {
         System.out.println("Menu login:");
         System.out.println("1 - Criar conta;");
         System.out.println("2 - Login;");
+        System.out.println("3 - Sair;");
         System.out.print("Sua escolha: ");
         return Integer.parseInt(scan.nextLine());
     }
