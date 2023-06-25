@@ -1,4 +1,4 @@
-package persistencia;
+package main;
 
 import comun.dados.Estado;
 import comun.util.ParseJsonServico;
@@ -43,8 +43,10 @@ public class PersistenciaServico {
         // Verificar se o arquivo existe
         File arquivo = new File(Constantes.ARQUIVO_ESTADO_PATH);
         if (!arquivo.exists()) {
-            System.out.println("O arquivo JSON não existe.");
-            throw new Exception();
+            criaArquivoSeNaoExistir();
+            var estado = new Estado();
+            salvaEstado(estado);
+            return estado;
         }
 
         // Ler o conteúdo do arquivo JSON

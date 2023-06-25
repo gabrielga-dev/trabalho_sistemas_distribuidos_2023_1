@@ -1,8 +1,9 @@
-import visao.Visao;
+import main.Visao;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        new Visao().inicia();
+        var visao = new Visao();
+        visao.inicia();
     }
 }

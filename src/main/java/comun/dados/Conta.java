@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class Conta implements Serializable {
 
     public Conta(){
         var transacaoInicial = new Transacao();
-        transacaoInicial.setValor(BigDecimal.valueOf(Constantes.VALOR_SALDO_INICIAL));
+        transacaoInicial.setValor(Constantes.VALOR_SALDO_INICIAL);
         transacaoInicial.setIdentificadorRecebedor(this.identificador);
         transacaoInicial.setIdentificadorPagador(null);
 
@@ -29,21 +30,20 @@ public class Conta implements Serializable {
         transacoes.add(transacaoInicial);
     }
 
-    public BigDecimal getSaldo(){
-        var soma = BigDecimal.ZERO;
-        var valores = new ArrayList<BigDecimal>();
-        this.transacoes
+    public Long getSaldo(){
+        var soma = 0L;
+        var valores = this.transacoes
                 .stream()
                 .map(
                         transacao -> {
-                            if ((identificador.compareTo(transacao.getIdentificadorPagador())) == 0){
-                                return transacao.getValor().negate();
+                            if (identificador.equals(transacao.getIdentificadorPagador())){
+                                return transacao.getValor() * (-1);
                             }
                             return transacao.getValor();
                         }
-                ).forEach(valores::add);
-        for (BigDecimal valor : valores) {
-            soma = soma.add(valor);
+                ).collect(Collectors.toList());
+        for (Long valor : valores) {
+            soma = soma + valor;
         }
         return soma;
     }

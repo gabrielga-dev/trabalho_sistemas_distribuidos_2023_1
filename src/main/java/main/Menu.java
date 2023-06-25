@@ -1,4 +1,4 @@
-package visao;
+package main;
 
 import comun.dados.Conta;
 import comun.dados.Login;
@@ -6,7 +6,6 @@ import comun.dados.Transacao;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -27,6 +26,7 @@ public class Menu {
         System.out.println("Menu principal:");
         System.out.println("1 - Transferir dinheiro;");
         System.out.println("2 - Conferir saldo;");
+        System.out.println("3 - Sair;");
         System.out.print("Sua escolha: ");
         return Integer.parseInt(scan.nextLine());
     }
@@ -35,6 +35,7 @@ public class Menu {
         var conta = new Conta();
 
         conta.setIdentificador(UUID.randomUUID().toString());
+        conta.getTransacoes().get(0).setIdentificadorRecebedor(conta.getIdentificador());
 
         System.out.print("Digite o seu nome: ");
         conta.setNomeCliente(scan.nextLine());
@@ -66,7 +67,7 @@ public class Menu {
         transacao.setIdentificadorRecebedor(scan.nextLine());
 
         System.out.print("Digite o valor a ser transferido: ");
-        transacao.setValor(new BigDecimal(scan.nextLine()));
+        transacao.setValor(Long.valueOf(scan.nextLine()));
 
         return transacao;
     }

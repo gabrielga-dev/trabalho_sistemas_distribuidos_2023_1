@@ -12,7 +12,7 @@ public class Transacao implements Serializable {
 
     private String identificadorPagador;
     private String identificadorRecebedor;
-    private BigDecimal valor;
+    private Long valor;
 
     private String server;
 }

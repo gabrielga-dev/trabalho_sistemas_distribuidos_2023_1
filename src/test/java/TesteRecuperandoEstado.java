@@ -1,5 +1,5 @@
 import comun.util.ParseJsonServico;
-import persistencia.PersistenciaServico;
+import main.PersistenciaServico;
 
 import java.math.BigDecimal;
 
