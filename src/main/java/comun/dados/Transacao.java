@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -14,5 +13,8 @@ public class Transacao implements Serializable {
     private String identificadorRecebedor;
     private Long valor;
 
-    private String server;
+    public boolean validacao() {
+        return (identificadorPagador != null) && (identificadorRecebedor != null) && (valor != null) && (valor > 0) &&
+                (!identificadorRecebedor.equals(identificadorPagador));
+    }
 }

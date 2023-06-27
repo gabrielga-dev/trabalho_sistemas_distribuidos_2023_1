@@ -1,11 +1,10 @@
 package comun.dados;
 
+import comun.util.Constantes;
 import lombok.Getter;
 import lombok.Setter;
-import comun.util.Constantes;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,5 +45,11 @@ public class Conta implements Serializable {
             soma = soma + valor;
         }
         return soma;
+    }
+
+    public boolean validacao() {
+        return (nomeCliente != null) && (identificador != null) && (senha != null) && (transacoes != null) &&
+                (!nomeCliente.isBlank()) && (!identificador.isBlank()) && (!senha.isBlank()) &&
+                (transacoes.size() == 1) && (transacoes.get(0).getIdentificadorPagador() == null);
     }
 }

@@ -1,4 +1,4 @@
-package main;
+package main.v1;
 
 import comun.dados.Estado;
 import comun.dados.Extrato;
@@ -7,6 +7,8 @@ import comun.protocolo.Protocolo;
 import comun.protocolo.TipoProtocolo;
 import comun.util.Constantes;
 import comun.util.ParseJsonServico;
+import main.Menu;
+import main.PersistenciaServico;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
