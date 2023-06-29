@@ -19,7 +19,6 @@ public class Controle extends ReceiverAdapter implements RequestHandler {
 
     private JChannel canalDeComunicacao;
     private MessageDispatcher despachante;
-    boolean sincronizando = false;
 
     public void inicia() throws Exception{
         canalDeComunicacao=new JChannel(Constantes.XML_TESTE);

@@ -13,11 +13,15 @@ import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
+import org.jgroups.View;
 import org.jgroups.blocks.MessageDispatcher;
 import org.jgroups.blocks.RequestHandler;
 import org.jgroups.blocks.RequestOptions;
 import org.jgroups.blocks.ResponseMode;
 import org.jgroups.util.RspList;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class GiganteGuerreiro extends ReceiverAdapter implements RequestHandler {
 
@@ -224,11 +228,29 @@ public class GiganteGuerreiro extends ReceiverAdapter implements RequestHandler 
             case EXTRATO:
                 protocolo.setConteudo(processaExtrato(protocolo.getConteudo()));
                 return protocolo;
+            //MANEIRA NÃO INTELIGENTE
             case BUSCA_ESTADO:
                 protocolo.setConteudo(processaBuscaEstado());
                 return protocolo;
         }
         return null;
+    }
+
+    //MANEIRA CORRETA DE BUSCA DE ESTADO
+    @Override
+    public void getState(OutputStream output) throws Exception {
+        output.write(ParseJsonServico.parseParaJson(this.estado).getBytes());
+    }
+
+    @Override
+    public void setState(InputStream input) throws Exception {
+        var estadoJson = new String(input.readAllBytes());
+        this.estado = ParseJsonServico.parseEstadoDeJson(estadoJson);
+    }
+
+    @Override
+    public void viewAccepted(View view) {
+        System.out.println("\n\n================> canal: " + canalDeComunicacao.getView().getMembers() + "\n\n");
     }
 
     private String processaLogin(String loginJson) {
